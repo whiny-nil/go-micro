@@ -1,2 +1,6 @@
 .DS_Store
 .vscode
+authentication-service/authApp
+broker-service/brokerApp
+db-data
+front-end/frontApp

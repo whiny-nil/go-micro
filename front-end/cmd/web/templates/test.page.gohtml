@@ -9,6 +9,7 @@
                 <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Broker</a>
                 <a id="authBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Auth</a>
                 <a id="logBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Log</a>
+                <a id="mailBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Mail</a>
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
@@ -37,6 +38,7 @@
         let brokerBtn = document.getElementById("brokerBtn");
         let authBrokerBtn = document.getElementById("authBrokerBtn");
         let logBrokerBtn = document.getElementById("logBrokerBtn");
+        let mailBrokerBtn = document.getElementById("mailBrokerBtn");
 
         let output = document.getElementById("output");
         let sent = document.getElementById("payload");
@@ -129,6 +131,43 @@
                     output.innerHTML += `<br><strong>Caught Error:</strong> ${error}`;
                 })
         });
+
+        mailBrokerBtn.addEventListener("click", function() {
+            const payload = {
+                action: "mail",
+                mail: {
+                    from: "marc@example.com",
+                    to: "world@example.com",
+                    subject: "Hello!",
+                    message: "What's up?  How are things?",
+                }
+            }
+
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+
+            const body = {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: headers,
+            };
+
+            fetch("http:\/\/localhost:8081/handle", body)
+                .then((response) => response.json())
+                .then((data) => {
+                    sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                    received.innerHTML = JSON.stringify(data, undefined, 4);
+                    if (data.error) {
+                        output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+                    } else {
+                        output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+                    };
+                })
+                .catch((error) => {
+                    output.innerHTML += `<br><strong>Caught Error:</strong> ${error}`;
+                })
+        });
+
 
     </script>
 {{end}}

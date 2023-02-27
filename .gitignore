@@ -6,3 +6,4 @@ db-data
 front-end/frontApp
 logger-service/loggerServiceApp
 mail-service/mailServiceApp
+listener-service/listenerApp

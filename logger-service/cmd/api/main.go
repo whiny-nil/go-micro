@@ -56,7 +56,9 @@ func main() {
 	if err != nil {
 		log.Panic()
 	}
+
 	go app.rpcListen()
+	go app.grpcListen()
 
 	// start web server
 	log.Printf("Starting log service on port %s\n", webPort)

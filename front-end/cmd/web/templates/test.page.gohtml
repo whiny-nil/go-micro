@@ -9,6 +9,7 @@
                 <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Broker</a>
                 <a id="authBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Auth</a>
                 <a id="logBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Log</a>
+                <a id="logGrpcBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test gRPC Log</a>
                 <a id="mailBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Mail</a>
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
@@ -38,6 +39,7 @@
         let brokerBtn = document.getElementById("brokerBtn");
         let authBrokerBtn = document.getElementById("authBrokerBtn");
         let logBrokerBtn = document.getElementById("logBrokerBtn");
+        let logGrpcBtn = document.getElementById("logGrpcBtn");
         let mailBrokerBtn = document.getElementById("mailBrokerBtn");
 
         let output = document.getElementById("output");
@@ -87,6 +89,24 @@
                 .then(parseJSON)
                 .then(showResponse)
                 .catch(showError)
+        });
+
+        logGrpcBtn.addEventListener("click", function() {
+            const payload = {
+                action: "log",
+                log: {
+                    name: "event",
+                    data: "Some kind of data, via gRPC",
+                }
+            }
+            showPayload(payload);
+
+            const body = makeJSONBody(payload);
+            fetch("http:\/\/localhost:8081/log-grpc", body)
+                .then(parseJSON)
+                .then(showResponse)
+                .catch(showError)
+        
         });
 
         logBrokerBtn.addEventListener("click", function() {
